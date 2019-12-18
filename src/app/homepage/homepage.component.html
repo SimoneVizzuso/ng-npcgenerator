@@ -1,0 +1,11 @@
+<p><mat-progress-bar class="description" *ngIf="(races$ | async).length == 0" mode="buffer"></mat-progress-bar></p>
+
+<div>
+    <div *ngIf="show" class="description">
+        <p>NOME is <b *ngIf="(races$ | async)[rngRaces] as rac">{{rac.description}}</b></p>
+        <p>PRONOMEPERSONALE has <b *ngIf="(appearance$ | async)[rngAppearance] as app">{{app.description}}</b></p>
+        <p>and PRONOMEPERSONALEMINUSCOLO <b *ngIf="(talents$ | async)[rngTalents] as tal">{{tal.description}}</b></p>
+    </div>
+
+    <p class="button-random"><button *ngIf="(races$ | async).length != 0" mat-button (click)="random()">Random!</button></p>
+</div>
