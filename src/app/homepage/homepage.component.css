@@ -7,10 +7,15 @@ h1{
 }
 .description{
     position: absolute;
-    top: 50%;
+    top: 25%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 .button-random{
     text-align: center;
+}
+.name{
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 1.5em;
 }

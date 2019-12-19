@@ -14,41 +14,55 @@ export class HomepageService {
   get appearance$(): Observable<Descriptor[]> { return this._appearance$.asObservable() }
 
   localtalent: string = 'local_talent';
-  private _talents$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
-  get talents$(): Observable<Descriptor[]> { return this._talents$.asObservable() }
+  private _talent$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
+  get talent$(): Observable<Descriptor[]> { return this._talent$.asObservable() }
 
-  localraces: string = 'local_races';
-  private _races$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
-  get races$(): Observable<Descriptor[]> { return this._races$.asObservable() }
+  localrace: string = 'local_race';
+  private _race$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
+  get race$(): Observable<Descriptor[]> { return this._race$.asObservable() }
+
+  localgender: string = 'local_gender';
+  private _gender$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
+  get gender$(): Observable<Descriptor[]> { return this._gender$.asObservable() }
+
+  localmaleName: string = 'local_maleName';
+  private _maleName$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
+  get maleName$(): Observable<Descriptor[]> { return this._maleName$.asObservable() }
+
+  localfemaleName: string = 'local_femaleName';
+  private _femaleName$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
+  get femaleName$(): Observable<Descriptor[]> { return this._femaleName$.asObservable() }
 
   _baseUrl: string = "http://localhost:3000/" //todo export
 
   constructor(private http: HttpClient) {
     this.downloadAppearance();
-    this.downloadTalents();
-    this.downloadRaces();
+    this.downloadTalent();
+    this.downloadRace();
+    this.downloadGender();
+    this.downloadMaleName();
+    this.downloadFemaleName();
   }
 
-  private downloadTalents(){
+  private downloadTalent(){
     this.http.get<Descriptor[]>(this._baseUrl + "talents").subscribe(
       (res: Descriptor[]) => {
-        console.log('Talents - Connected: download resources..')
+        console.log('Talent - Connected: download resources..')
         localStorage.setItem(this.localtalent, JSON.stringify(res))
-        let talents: Descriptor[] = new Array<Descriptor>()
+        let talent: Descriptor[] = new Array<Descriptor>()
         res.forEach(x => {
-          talents.push(new Descriptor(x.id, x.description))
+          talent.push(new Descriptor(x.id, x.description))
         })
-        this._talents$.next(talents)
+        this._talent$.next(talent)
       },
       err => {
-        console.log('Talents - Disconnected: using local resource')
-        let talents: Descriptor[] = new Array<Descriptor>()
+        console.log('Talent - Disconnected: using local resource')
+        let talent: Descriptor[] = new Array<Descriptor>()
         let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localtalent))
         res.forEach(x => {
-          x.id + " " + x.description
-          talents.push(new Descriptor(x.id, x.description))
+          talent.push(new Descriptor(x.id, x.description))
         })
-        this._talents$.next(talents)
+        this._talent$.next(talent)
       }
     )
   }
@@ -69,7 +83,6 @@ export class HomepageService {
         let appearance: Descriptor[] = new Array<Descriptor>()
         let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localappearance))
         res.forEach(x => {
-          x.id + " " + x.description
           appearance.push(new Descriptor(x.id, x.description))
         })
         this._appearance$.next(appearance)
@@ -77,26 +90,94 @@ export class HomepageService {
     )
   }
 
-  private downloadRaces(){
+  private downloadRace(){
     this.http.get<Descriptor[]>(this._baseUrl + "races").subscribe(
       (res: Descriptor[]) => {
-        console.log('Races - Connected: download resources..')
-        localStorage.setItem(this.localraces, JSON.stringify(res))
-        let races: Descriptor[] = new Array<Descriptor>()
+        console.log('Race - Connected: download resources..')
+        localStorage.setItem(this.localrace, JSON.stringify(res))
+        let race: Descriptor[] = new Array<Descriptor>()
         res.forEach(x => {
-          races.push(new Descriptor(x.id, x.description))
+          race.push(new Descriptor(x.id, x.description))
         })
-        this._races$.next(races)
+        this._race$.next(race)
       },
       err => {
-        console.log('Races - Disconnected: using local resource')
-        let races: Descriptor[] = new Array<Descriptor>()
-        let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localraces))
+        console.log('Race - Disconnected: using local resource')
+        let race: Descriptor[] = new Array<Descriptor>()
+        let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localrace))
         res.forEach(x => {
-          x.id + " " + x.description
-          races.push(new Descriptor(x.id, x.description))
+          race.push(new Descriptor(x.id, x.description))
         })
-        this._races$.next(races)
+        this._race$.next(race)
+      }
+    )
+  }
+
+  private downloadGender(){
+    this.http.get<Descriptor[]>(this._baseUrl + "gender").subscribe(
+      (res: Descriptor[]) => {
+        console.log('Gender - Connected: download resources..')
+        localStorage.setItem(this.localgender, JSON.stringify(res))
+        let gender: Descriptor[] = new Array<Descriptor>()
+        res.forEach(x => {
+          gender.push(new Descriptor(x.id, x.description))
+        })
+        this._gender$.next(gender)
+      },
+      err => {
+        console.log('Gender - Disconnected: using local resource')
+        let gender: Descriptor[] = new Array<Descriptor>()
+        let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localgender))
+        res.forEach(x => {
+          gender.push(new Descriptor(x.id, x.description))
+        })
+        this._gender$.next(gender)
+      }
+    )
+  }
+
+  private downloadMaleName(){
+    this.http.get<Descriptor[]>(this._baseUrl + "maleNames").subscribe(
+      (res: Descriptor[]) => {
+        console.log('MaleName - Connected: download resources..')
+        localStorage.setItem(this.localmaleName, JSON.stringify(res))
+        let maleName: Descriptor[] = new Array<Descriptor>()
+        res.forEach(x => {
+          maleName.push(new Descriptor(x.id, x.description))
+        })
+        this._maleName$.next(maleName)
+      },
+      err => {
+        console.log('MaleName - Disconnected: using local resource')
+        let maleName: Descriptor[] = new Array<Descriptor>()
+        let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localmaleName))
+        res.forEach(x => {
+          maleName.push(new Descriptor(x.id, x.description))
+        })
+        this._maleName$.next(maleName)
+      }
+    )
+  }
+
+  private downloadFemaleName(){
+    this.http.get<Descriptor[]>(this._baseUrl + "femaleNames").subscribe(
+      (res: Descriptor[]) => {
+        console.log('FemaleName - Connected: download resources..')
+        localStorage.setItem(this.localfemaleName, JSON.stringify(res))
+        let femaleName: Descriptor[] = new Array<Descriptor>()
+        res.forEach(x => {
+          femaleName.push(new Descriptor(x.id, x.description))
+        })
+        this._femaleName$.next(femaleName)
+      },
+      err => {
+        console.log('FemaleName - Disconnected: using local resource')
+        let femaleName: Descriptor[] = new Array<Descriptor>()
+        let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localfemaleName))
+        res.forEach(x => {
+          femaleName.push(new Descriptor(x.id, x.description))
+        })
+        this._femaleName$.next(femaleName)
       }
     )
   }
