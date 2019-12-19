@@ -1,0 +1,23 @@
+/* You can add global styles to this file, and also import other style files */
+
+$theme: var(--theme-color);
+$font: var(--font-color);
+
+html, body { height: 100%; }
+body {
+    background-color: black;
+    color: $font;
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: $theme;
+}
+
+button{
+    float: right;
+    border: 0.1em solid $font !important;
+    clear: both;
+}
+
+mat-toolbar{
+    color: $font;
+}

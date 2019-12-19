@@ -1,13 +1,13 @@
 <p><mat-progress-bar class="description" *ngIf="(race$ | async).length == 0" mode="buffer"></mat-progress-bar></p>
 
-<div>
-    <div *ngIf="show" class="description">
+<div class="description">
+    <p class="random-button"><button *ngIf="(race$ | async).length != 0" mat-button (click)="random()">Random!</button></p>
+    <div *ngIf="show">
         <div *ngIf="show && (gender$ | async)[rngGender].description == 'He'" class="name"><span *ngIf="(maleName$ | async)[rngMaleNames] as mna">{{mna.description}}</span></div>
         <div *ngIf="show && (gender$ | async)[rngGender].description == 'She'" class="name"><span *ngIf="(femaleName$ | async)[rngFemaleNames] as fna">{{fna.description}}</span></div>
         <p><span *ngIf="(gender$ | async)[rngGender] as gen">{{gen.description}}</span> is a <i *ngIf="(race$ | async)[rngRace] as rac">{{rac.description}}</i>, {{rngAge}} yo</p>
         <p><span *ngIf="(gender$ | async)[rngGender] as gen">{{gen.description.toLocaleLowerCase()}}</span> has <i *ngIf="(appearance$ | async)[rngAppearance] as app">{{app.description}}</i></p>
         <p>and <span *ngIf="(gender$ | async)[rngGender] as gen">{{gen.description.toLocaleLowerCase()}} </span><i *ngIf="(talent$ | async)[rngTalent] as tal">{{tal.description}}</i></p>
+        <p><span *ngIf="(highAbility$ | async)[rnghighAbility] as hab">{{hab.description}}</span> <span *ngIf="(lowAbility$ | async)[rnglowAbility] as lab">{{lab.description}}</span></p>
     </div>
-
-    <p class="button-random"><button *ngIf="(race$ | async).length != 0" mat-button (click)="random()">Random!</button></p>
 </div>

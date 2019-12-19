@@ -1,1 +1,6 @@
+<mat-toolbar class="toolbar">
+    <button mat-button class="toolbar-button" routerLink="homepage" routerLinkActive="active">Home</button>
+    <button mat-button class="toolbar-button" routerLink="info" routerLinkActive="active">Info</button>
+    <button mat-button class="toolbar-button" (click)="changeTheme()">Change Theme</button>
+</mat-toolbar>
 <router-outlet></router-outlet>

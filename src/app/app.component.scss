@@ -1,0 +1,16 @@
+$font: var(--font-color);
+$theme: var(--theme-color);
+
+button{
+    border: 0.1em solid #FFFFFF !important;
+}
+
+.toolbar{
+    background-color: "#000000";
+    clear: both;
+    margin: 0;
+}
+
+.toolbar-button{
+    margin-right: 1em;
+}

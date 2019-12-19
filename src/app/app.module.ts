@@ -9,11 +9,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { StorageServiceModule } from 'ngx-webstorage-service';
+import { InfoComponent } from './info/info.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomepageComponent
+    HomepageComponent,
+    InfoComponent
   ],
   imports: [
     BrowserModule,

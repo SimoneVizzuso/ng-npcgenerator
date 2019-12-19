@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core'
-import { Observable, BehaviorSubject, AsyncSubject } from 'rxjs'
-import { publishReplay, refCount } from 'rxjs/operators'
+import { Observable, BehaviorSubject, AsyncSubject, throwError } from 'rxjs'
+import { publishReplay, refCount, retry, catchError } from 'rxjs/operators'
 import { Descriptor } from 'src/app/classes/descriptor'
 import { HttpClient } from '@angular/common/http'
 
@@ -33,6 +33,14 @@ export class HomepageService {
   private _femaleName$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
   get femaleName$(): Observable<Descriptor[]> { return this._femaleName$.asObservable() }
 
+  locallowAbility: string = 'local_lowAbility';
+  private _lowAbility$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
+  get lowAbility$(): Observable<Descriptor[]> { return this._lowAbility$.asObservable() }
+
+  localhighAbility: string = 'local_highAbility';
+  private _highAbility$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
+  get highAbility$(): Observable<Descriptor[]> { return this._highAbility$.asObservable() }
+
   _baseUrl: string = "http://localhost:3000/" //todo export
 
   constructor(private http: HttpClient) {
@@ -42,16 +50,21 @@ export class HomepageService {
     this.downloadGender();
     this.downloadMaleName();
     this.downloadFemaleName();
+    this.downloadLowAbility();
+    this.downloadHighAbility();
   }
 
   private downloadTalent(){
-    this.http.get<Descriptor[]>(this._baseUrl + "talents").subscribe(
+    this.http.get<Descriptor[]>(this._baseUrl + "talents").pipe(
+      retry(1),
+      catchError(this.handleError)
+    ).subscribe(
       (res: Descriptor[]) => {
         console.log('Talent - Connected: download resources..')
         localStorage.setItem(this.localtalent, JSON.stringify(res))
         let talent: Descriptor[] = new Array<Descriptor>()
         res.forEach(x => {
-          talent.push(new Descriptor(x.id, x.description))
+          talent.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._talent$.next(talent)
       },
@@ -60,7 +73,7 @@ export class HomepageService {
         let talent: Descriptor[] = new Array<Descriptor>()
         let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localtalent))
         res.forEach(x => {
-          talent.push(new Descriptor(x.id, x.description))
+          talent.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._talent$.next(talent)
       }
@@ -68,13 +81,16 @@ export class HomepageService {
   }
 
   private downloadAppearance(){
-    this.http.get<Descriptor[]>(this._baseUrl + "appearance").subscribe(
+    this.http.get<Descriptor[]>(this._baseUrl + "appearance").pipe(
+      retry(1),
+      catchError(this.handleError)
+    ).subscribe(
       (res: Descriptor[]) => {
         console.log('Appearance - Connected: download resources..')
         localStorage.setItem(this.localappearance, JSON.stringify(res))
         let appearance: Descriptor[] = new Array<Descriptor>()
         res.forEach(x => {
-          appearance.push(new Descriptor(x.id, x.description))
+          appearance.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._appearance$.next(appearance)
       },
@@ -83,7 +99,7 @@ export class HomepageService {
         let appearance: Descriptor[] = new Array<Descriptor>()
         let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localappearance))
         res.forEach(x => {
-          appearance.push(new Descriptor(x.id, x.description))
+          appearance.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._appearance$.next(appearance)
       }
@@ -91,13 +107,16 @@ export class HomepageService {
   }
 
   private downloadRace(){
-    this.http.get<Descriptor[]>(this._baseUrl + "races").subscribe(
+    this.http.get<Descriptor[]>(this._baseUrl + "races").pipe(
+      retry(1),
+      catchError(this.handleError)
+    ).subscribe(
       (res: Descriptor[]) => {
         console.log('Race - Connected: download resources..')
         localStorage.setItem(this.localrace, JSON.stringify(res))
         let race: Descriptor[] = new Array<Descriptor>()
         res.forEach(x => {
-          race.push(new Descriptor(x.id, x.description))
+          race.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._race$.next(race)
       },
@@ -106,7 +125,7 @@ export class HomepageService {
         let race: Descriptor[] = new Array<Descriptor>()
         let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localrace))
         res.forEach(x => {
-          race.push(new Descriptor(x.id, x.description))
+          race.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._race$.next(race)
       }
@@ -114,13 +133,16 @@ export class HomepageService {
   }
 
   private downloadGender(){
-    this.http.get<Descriptor[]>(this._baseUrl + "gender").subscribe(
+    this.http.get<Descriptor[]>(this._baseUrl + "gender").pipe(
+      retry(1),
+      catchError(this.handleError)
+    ).subscribe(
       (res: Descriptor[]) => {
         console.log('Gender - Connected: download resources..')
         localStorage.setItem(this.localgender, JSON.stringify(res))
         let gender: Descriptor[] = new Array<Descriptor>()
         res.forEach(x => {
-          gender.push(new Descriptor(x.id, x.description))
+          gender.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._gender$.next(gender)
       },
@@ -129,7 +151,7 @@ export class HomepageService {
         let gender: Descriptor[] = new Array<Descriptor>()
         let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localgender))
         res.forEach(x => {
-          gender.push(new Descriptor(x.id, x.description))
+          gender.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._gender$.next(gender)
       }
@@ -137,13 +159,16 @@ export class HomepageService {
   }
 
   private downloadMaleName(){
-    this.http.get<Descriptor[]>(this._baseUrl + "maleNames").subscribe(
+    this.http.get<Descriptor[]>(this._baseUrl + "maleNames").pipe(
+      retry(1),
+      catchError(this.handleError)
+    ).subscribe(
       (res: Descriptor[]) => {
         console.log('MaleName - Connected: download resources..')
         localStorage.setItem(this.localmaleName, JSON.stringify(res))
         let maleName: Descriptor[] = new Array<Descriptor>()
         res.forEach(x => {
-          maleName.push(new Descriptor(x.id, x.description))
+          maleName.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._maleName$.next(maleName)
       },
@@ -152,7 +177,7 @@ export class HomepageService {
         let maleName: Descriptor[] = new Array<Descriptor>()
         let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localmaleName))
         res.forEach(x => {
-          maleName.push(new Descriptor(x.id, x.description))
+          maleName.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._maleName$.next(maleName)
       }
@@ -160,13 +185,16 @@ export class HomepageService {
   }
 
   private downloadFemaleName(){
-    this.http.get<Descriptor[]>(this._baseUrl + "femaleNames").subscribe(
+    this.http.get<Descriptor[]>(this._baseUrl + "femaleNames").pipe(
+      retry(1),
+      catchError(this.handleError)
+    ).subscribe(
       (res: Descriptor[]) => {
         console.log('FemaleName - Connected: download resources..')
         localStorage.setItem(this.localfemaleName, JSON.stringify(res))
         let femaleName: Descriptor[] = new Array<Descriptor>()
         res.forEach(x => {
-          femaleName.push(new Descriptor(x.id, x.description))
+          femaleName.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._femaleName$.next(femaleName)
       },
@@ -175,10 +203,72 @@ export class HomepageService {
         let femaleName: Descriptor[] = new Array<Descriptor>()
         let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localfemaleName))
         res.forEach(x => {
-          femaleName.push(new Descriptor(x.id, x.description))
+          femaleName.push(new Descriptor(x.id, x.description, x.masterHint))
         })
         this._femaleName$.next(femaleName)
       }
     )
+  }
+
+  private downloadLowAbility(){
+    this.http.get<Descriptor[]>(this._baseUrl + "lowAbility").pipe(
+      retry(1),
+      catchError(this.handleError)
+    ).subscribe(
+      (res: Descriptor[]) => {
+        console.log('LowAbility - Connected: download resources..')
+        localStorage.setItem(this.locallowAbility, JSON.stringify(res))
+        let lowAbility: Descriptor[] = new Array<Descriptor>()
+        res.forEach(x => {
+          lowAbility.push(new Descriptor(x.id, x.description, x.masterHint))
+        })
+        this._lowAbility$.next(lowAbility)
+      },
+      err => {
+        console.log('LowAbility - Disconnected: using local resource')
+        let lowAbility: Descriptor[] = new Array<Descriptor>()
+        let res: Descriptor[] = JSON.parse(localStorage.getItem(this.locallowAbility))
+        res.forEach(x => {
+          lowAbility.push(new Descriptor(x.id, x.description, x.masterHint))
+        })
+        this._lowAbility$.next(lowAbility)
+      }
+    )
+  }
+
+  private downloadHighAbility(){
+    this.http.get<Descriptor[]>(this._baseUrl + "highAbility").pipe(
+      retry(1),
+      catchError(this.handleError)
+    ).subscribe(
+      (res: Descriptor[]) => {
+        console.log('HighAbility - Connected: download resources..')
+        localStorage.setItem(this.localhighAbility, JSON.stringify(res))
+        let highAbility: Descriptor[] = new Array<Descriptor>()
+        res.forEach(x => {
+          highAbility.push(new Descriptor(x.id, x.description, x.masterHint))
+        })
+        this._highAbility$.next(highAbility)
+      },
+      err => {
+        console.log('HighAbility - Disconnected: using local resource')
+        let highAbility: Descriptor[] = new Array<Descriptor>()
+        let res: Descriptor[] = JSON.parse(localStorage.getItem(this.localhighAbility))
+        res.forEach(x => {
+          highAbility.push(new Descriptor(x.id, x.description, x.masterHint))
+        })
+        this._highAbility$.next(highAbility)
+      }
+    )
+  }
+
+  handleError(error) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+    } else {
+      // server-side error
+    }
+    return throwError(errorMessage);
   }
 }

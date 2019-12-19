@@ -7,7 +7,7 @@ import { stringify } from 'querystring';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css']
+  styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent implements OnInit {
 
@@ -17,6 +17,8 @@ export class HomepageComponent implements OnInit {
   gender$: Observable<Descriptor[]>
   maleName$: Observable<Descriptor[]>
   femaleName$: Observable<Descriptor[]>
+  lowAbility$: Observable<Descriptor[]>
+  highAbility$: Observable<Descriptor[]>
   show: boolean = false;
 
   rngAppearance: number = getRandomArbitrary(0, 1)
@@ -25,6 +27,8 @@ export class HomepageComponent implements OnInit {
   rngGender: number = getRandomArbitrary(0, 1)
   rngMaleNames: number = getRandomArbitrary(0, 1)
   rngFemaleNames: number = getRandomArbitrary(0, 1)
+  rnglowAbility: number = getRandomArbitrary(0, 1)
+  rnghighAbility: number = getRandomArbitrary(0, 1)
   rngAge: number = getRandomArbitrary(0, 1)
 
   constructor(private homepageService: HomepageService) { }
@@ -36,6 +40,8 @@ export class HomepageComponent implements OnInit {
     this.gender$ = this.homepageService.gender$
     this.maleName$ = this.homepageService.maleName$
     this.femaleName$ = this.homepageService.femaleName$
+    this.lowAbility$ = this.homepageService.lowAbility$
+    this.highAbility$ = this.homepageService.highAbility$
   }
 
   random(){
@@ -46,6 +52,10 @@ export class HomepageComponent implements OnInit {
     this.rngMaleNames = getRandomArbitrary(0, 149)
     this.rngFemaleNames = getRandomArbitrary(0, 149)
     this.rngAge = getRandomArbitrary(15, 70)
+    do{
+      this.rnglowAbility = getRandomArbitrary(0, 5)
+      this.rnghighAbility = getRandomArbitrary(0, 5)
+    } while (this.rnglowAbility == this.rnghighAbility)
     this.show = true
   }
 }
