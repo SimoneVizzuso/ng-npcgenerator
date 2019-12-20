@@ -30,7 +30,7 @@ MongoClient.connect('mongodb://localhost:27017/', { useUnifiedTopology: true }, 
   lowAbility = db.collection('lowAbility')
 })
 
-app.get('/*', function(req,res) {
+app.get('/', function(req,res) {
     res.sendFile(path.join(__dirname,'/dist/npcgenerator/index.html'));
 });
 
@@ -82,4 +82,4 @@ app.get('/lowAbility', (req, res) => {
     })
 })
 
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || _port);
