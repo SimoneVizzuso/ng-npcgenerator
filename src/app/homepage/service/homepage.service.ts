@@ -41,7 +41,7 @@ export class HomepageService {
   private _highAbility$: BehaviorSubject<Descriptor[]> = new BehaviorSubject(new Array())
   get highAbility$(): Observable<Descriptor[]> { return this._highAbility$.asObservable() }
 
-  _baseUrl: string = "http://localhost:3000/" //todo export
+  _baseUrl: string = "https://stark-castle-07925.herokuapp.com/" //todo export
 
   constructor(private http: HttpClient) {
     this.downloadAppearance();

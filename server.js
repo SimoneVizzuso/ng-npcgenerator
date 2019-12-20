@@ -34,6 +34,10 @@ app.get('/', function(req,res) {
     res.sendFile(path.join(__dirname,'/dist/npcgenerator/index.html'));
 });
 
+app.get('/homepage', function(req,res) {
+    res.sendFile(path.join(__dirname,'/dist/npcgenerator/index.html'));
+});
+
 app.get('/appearance', (req, res) => {
     appearance.find({}).toArray(function(err, result) {
         res.send(result)
