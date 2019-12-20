@@ -18,14 +18,14 @@ const cors = require('cors')
 app.set('view engine', 'ejs')
 app.use(express.static('./dist/npcgenerator'), bodyParser.urlencoded({extended: true}), cors(corsOptions))
 
-MongoClient.connect('mongodb://localhost:27017/', { useUnifiedTopology: true }, (err, database) => {
+MongoClient.connect('mongodb+srv://npcadmin:x5voktzB25hWtwOq@npcgenerator-hrw7r.mongodb.net/test?retryWrites=true&w=majority', { useUnifiedTopology: true }, (err, database) => {
   db = database.db('npcgenerator');
   appearance = db.collection('appearance');
-  talents = db.collection('talents')
-  races = db.collection('races')
+  talents = db.collection('talent')
+  races = db.collection('race')
   gender = db.collection('gender')
-  femaleName = db.collection('femaleNames')
-  maleName = db.collection('maleNames')
+  femaleName = db.collection('femaleName')
+  maleName = db.collection('maleName')
   highAbility = db.collection('highAbility')
   lowAbility = db.collection('lowAbility')
 })
@@ -40,13 +40,13 @@ app.get('/appearance', (req, res) => {
     })
 })
 
-app.get('/talents', (req, res) => {
+app.get('/talent', (req, res) => {
     talents.find({}).toArray(function(err, result) {
         res.send(result)
     })
 })
 
-app.get('/races', (req, res) => {
+app.get('/race', (req, res) => {
     races.find({}).toArray(function(err, result) {
         res.send(result)
     })
@@ -58,13 +58,13 @@ app.get('/gender', (req, res) => {
     })
 })
 
-app.get('/maleNames', (req, res) => {
+app.get('/maleName', (req, res) => {
     maleName.find({}).toArray(function(err, result) {
         res.send(result)
     })
 })
 
-app.get('/femaleNames', (req, res) => {
+app.get('/femaleName', (req, res) => {
     femaleName.find({}).toArray(function(err, result) {
         res.send(result)
     })

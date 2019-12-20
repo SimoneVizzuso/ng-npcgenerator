@@ -55,7 +55,7 @@ export class HomepageService {
   }
 
   private downloadTalent(){
-    this.http.get<Descriptor[]>(this._baseUrl + "talents").pipe(
+    this.http.get<Descriptor[]>(this._baseUrl + "talent").pipe(
       retry(1),
       catchError(this.handleError)
     ).subscribe(
@@ -107,7 +107,7 @@ export class HomepageService {
   }
 
   private downloadRace(){
-    this.http.get<Descriptor[]>(this._baseUrl + "races").pipe(
+    this.http.get<Descriptor[]>(this._baseUrl + "race").pipe(
       retry(1),
       catchError(this.handleError)
     ).subscribe(
@@ -159,7 +159,7 @@ export class HomepageService {
   }
 
   private downloadMaleName(){
-    this.http.get<Descriptor[]>(this._baseUrl + "maleNames").pipe(
+    this.http.get<Descriptor[]>(this._baseUrl + "maleName").pipe(
       retry(1),
       catchError(this.handleError)
     ).subscribe(
@@ -185,7 +185,7 @@ export class HomepageService {
   }
 
   private downloadFemaleName(){
-    this.http.get<Descriptor[]>(this._baseUrl + "femaleNames").pipe(
+    this.http.get<Descriptor[]>(this._baseUrl + "femaleName").pipe(
       retry(1),
       catchError(this.handleError)
     ).subscribe(
