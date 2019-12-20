@@ -1,4 +1,5 @@
 const express = require('express');
+const compression = require('compression')
 const bodyParser = require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 const path = require('path');
@@ -16,7 +17,7 @@ const _port = 3000;
 const cors = require('cors')
 
 app.set('view engine', 'ejs')
-app.use(express.static('./dist/npcgenerator'), bodyParser.urlencoded({extended: true}), cors(corsOptions))
+app.use(compression(), express.static('./dist/npcgenerator'), bodyParser.urlencoded({extended: true}), cors(corsOptions))
 
 MongoClient.connect('mongodb+srv://npcadmin:x5voktzB25hWtwOq@npcgenerator-hrw7r.mongodb.net/test?retryWrites=true&w=majority', { useUnifiedTopology: true }, (err, database) => {
   db = database.db('npcgenerator');
